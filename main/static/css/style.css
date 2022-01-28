@@ -1,0 +1,226 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    border: 1px solid red;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    padding: 0 15%;
+}
+
+.logo {
+    width: 10%;
+    height: auto;
+    max-width: 100px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-evenly;
+    list-style-type: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    top: 10%;
+    padding: .5%;
+    background-color: #3E6024;
+    box-shadow: 0 0 54px 0 rgba(0, 0, 0, 0.2);
+}
+
+.navbar a {
+    text-decoration: none;
+    color: white;
+}
+
+.image-container {
+    position:relative;
+    display:inline-block;
+    text-align:center;
+}
+
+.main-img {
+    width: 100%;
+}
+
+.shop-now {
+    position: absolute;
+    padding: 1% 5%;
+    top: 75%;
+    left: 42%;
+    border: 2px solid #3E6024;
+    background-color: #3E6024;
+    border-radius: 10px;
+    color: white;
+    font-size: 17px;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 0 54px 0 rgba(0, 0, 0, 0.2);
+}
+
+.text-row {
+    display: flex;
+}
+
+.blog {
+    width: 50%;
+}
+
+.blog-img {
+    width: 25%; 
+    float: left;
+}
+
+.newsletter {
+    width: 50%;
+}
+
+.form-container {
+    border-radius: 5px;
+    background-color: #f5f5f6;
+    padding: 20%;
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+
+.row {
+    margin: 0 3%;
+}
+input[type=submit] {
+    background-color: #04AA6D;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+.text-center {
+    text-align: center;
+}
+
+
+.xxs-margin-b {
+    margin-bottom: 1%;
+}
+
+
+
+.col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+  }
+  
+  .col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+
+
+    
+/*TEST */
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 450px;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+
+
+
+
+
+
+
+
+
+  /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 600px) {
+    .col-25, .col-75, input[type=submit] {
+      width: 100%;
+      margin-top: 0;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

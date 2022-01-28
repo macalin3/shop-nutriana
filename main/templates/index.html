@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Nutriana</title>
+    {% load static %}
+    <link href="{% static '../static/css/style.css' %}" rel="stylesheet">
+    <script src="{%static '../static/js/script.js'%}"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!--UPDATE HERE -->
+        <header>
+            <img src="{% static '../static/img/logo.png' %}" class="logo">
+            <button id="myBtn" class="first-button">Sign In</button>
+        </header>
+        <nav>
+            <ul class="navbar">
+                <li><a href="/">Home</a></li>
+                <li><a href="">About</a></li>
+                <li><a href="">Our Products</a></li>
+                <li><a href="">Contact</a></li>
+            </ul>
+        </nav>
+        <!-- END UPDATE HERE -->
+        <div class="image-container">
+            <img src="{% static '../static/img/family_home.png'%}" class="main-img">
+            <a href="" class="shop-now">Shop Now</a>
+        </div>
+        <div class="text-row">
+            <div class="blog">
+                <img src="{% static '../static/img/portrait.jpg' %}" class="blog-img">
+                <h2>Lorem Ipsum</h2><br>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur sed voluptas nemo fugiat ullam
+                    ratione quos laudantium minima beatae vel temporibus, voluptatem sint mollitia atque corporis veniam
+                    quas odio repellat.</p>
+            </div>
+            <div class="newsletter">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit?
+            </div>
+        </div>
+
+        <footer style="text-align: center;">
+            <p>Shop Nutriana</p>
+            <p>This is the footer</p>
+        </footer>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Sign in</h2>
+                <small>Enjoy exclusive deals and rewards when you join!</small>
+            </div>
+            <div class="modal-body">
+                <form action="/process-login" method="post">
+                    {% csrf_token %}
+                    <div class="input-field"><input placeholder="Email" class="validate"></div>
+                    <div class="input-field"><input placeholder="Password" class="validate"></div>
+                    <button type="submit" class="second-button">Sign in</button>
+                </form>
+                <a href="/sign-up">Become a Member</a>
+                <button id="myBtn2">Test</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="myModal2" class="modal">
+        This is a test
+    </div>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal 
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+
+</html>

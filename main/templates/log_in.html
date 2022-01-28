@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In To Your Account</title>
+    {% load static %}
+    <link href="{% static '../static/css/style.css' %}" rel="stylesheet">
+    <link href="{% static '../static/js/script.js' %}">
+</head>
+<body>
+    <div class="container">
+        <!--UPDATE HERE -->
+        <header>
+            <img src="{% static '../static/img/logo.png' %}" class="logo">
+            <a href="#">Log In or Create Account</a>
+        </header>
+        <nav>
+            <ul class="navbar">
+                <li><a href="">Home</a></li>
+                <li><a href="">About</a></li>
+                <li><a href="">Our Products</a></li>
+                <li><a href="">Contact</a></li>
+            </ul>
+        </nav>
+        <!-- END UPDATE HERE -->
+        <div class="form-container">
+            <h1 class="text-center xxs-margin-b">Log In To Your Account</h1>
+            <form action="#" method="post">
+                <div class="row">
+                    <div class="col-25">
+                        <label for="email">E-mail Address</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" name="email" placeholder="Please enter a valid e-mail address">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Password</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="password" id="fname" name="password" placeholder="Your name..">
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
