@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 import bcrypt
 import re
 from .models import User, Product, Order, Cart, Review
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone 
 
 def index(request):
 
@@ -11,7 +13,7 @@ def index(request):
         context = {
             "all_products": Product.objects.all(),
         }
-        
+
         return render(request,"index.html", context)
     
     else:
@@ -22,9 +24,6 @@ def index(request):
         }
 
         return render(request, "index.html", context)
-
-def show_products(request):
-    return render(request, "our_products.html")
 
 def log_in(request):
     return render(request, "log_in.html")
@@ -74,11 +73,144 @@ def process_signup(request):
 
 def view_product(request, productID):
 
-    context = {
-        "product": Product.objects.get(id=productID),
-    }
-    return render(request, "view_product.html", context)
+    try:
+        order = Cart.objects.get(user=User.objects.get(id=request.session['user_id']))
+
+        context = {
+            "product": Product.objects.get(id=productID),
+            "current_user": User.objects.get(id=request.session['user_id']),
+            "current_order": order,
+        }
+        return render(request, "view_product.html", context)
+    
+    except ObjectDoesNotExist:
+        context = {
+            "product": Product.objects.get(id=productID),
+            "current_user": User.objects.get(id=request.session['user_id']),
+        
+        }
+
+        return render(request, 'view_product.html', context)
 
 def sign_out(request):
     del request.session['user_id']
     return redirect('/')
+
+def add_favorite(request, productID):
+    this_product = Product.objects.get(id=productID)
+    this_user = User.objects.get(id=request.session['user_id'])
+    this_user.products_liked.add(this_product)
+    print('success!')
+    return redirect(f'/our-products/{productID}')    
+
+def remove_favorite(request, productID):
+    this_product = Product.objects.get(id=productID)
+    this_user = User.objects.get(id=request.session['user_id'])
+    this_user.products_liked.remove(this_product)
+    return redirect(f'/our-products/{productID}')
+
+def item_increment(request, productID):
+    item = get_object_or_404(Product, id=productID)
+    current_user = User.objects.get(id=request.session['user_id'])
+    order_item, created = Order.objects.get_or_create(
+        product=item,
+        user=current_user,
+        ordered=False
+    )
+    inquiry = Cart.objects.filter(user=current_user,ordered=False)
+    if inquiry.exists():
+        order = inquiry[0]
+        if order.orders.filter(product_id=productID).exists():
+            order_item.quantity += 1
+            order_item.save()
+            messages.info(request, "Successfully added to your cart!")
+            return redirect(f'/our-products/{productID}')
+
+        else:
+            order.orders.add(order_item)
+            messages.info(request, "Successfully added to your cart!")
+            return redirect(f'/our-products/{productID}')
+    else:
+        ordered_date = timezone.now()
+        order = Cart.objects.create(
+            user=current_user,
+            ordered_date=ordered_date
+        )
+        order.orders.add(order_item)
+        messages.info(request, "Successfully added to your cart!")
+        return redirect(f'/our-products/{productID}')
+
+def item_increment_cart(request, productID):
+    item = get_object_or_404(Product, id=productID)
+    current_user = User.objects.get(id=request.session['user_id'])
+    order_item, created = Order.objects.get_or_create(
+        product=item,
+        user=current_user,
+        ordered=False
+    )
+    inquiry = Cart.objects.filter(user=current_user,ordered=False)
+    if inquiry.exists():
+        order = inquiry[0]
+        if order.orders.filter(product_id=productID).exists():
+            order_item.quantity += 1
+            order_item.save()
+            return redirect(f'/our-products/{productID}')
+
+        else:
+            order.orders.add(order_item)
+            return redirect(f'/our-products/{productID}')
+    else:
+        ordered_date = timezone.now()
+        order = Cart.objects.create(
+            user=current_user,
+            ordered_date=ordered_date
+        )
+        order.orders.add(order_item)
+        return redirect(f'/our-products/{productID}')
+
+def item_decrement_cart(request, productID):
+    item = Product.objects.get(id=productID)
+    current_user = User.objects.get(id=request.session['user_id'])
+    inquiry = Cart.objects.filter(user=current_user,ordered=False)
+    if inquiry.exists():
+        order = inquiry[0]
+        if order.orders.filter(product_id=productID).exists():
+            order_item = Order.objects.filter(
+                product=item,
+                user=current_user,
+                ordered=False
+            )[0]
+            if order_item.quantity > 1:
+                order_item.quantity -= 1
+                order_item.save()
+                
+            else:
+                order.orders.remove(order_item)
+            return redirect(f'/our-products/{productID}')
+        else:
+            order.orders.remove(order_item)
+            messages.info(request, "This item was not in your cart")
+            return redirect(f'/our-products/{productID}')
+    else:
+        messages.info(request, "You do not have an active order")
+        return redirect(f'/our-products/{productID}')
+
+def show_products(request):
+    
+    if not request.session.get('user_id'):
+
+        context = {
+            "all_products": Product.objects.all(),
+        }
+
+        return render(request,"our_products.html", context)
+    
+    else:
+
+        context = {
+            "all_products": Product.objects.all(),
+            "current_user": User.objects.get(id=request.session['user_id']),
+        }
+
+        return render(request, "our_products.html", context)
+    

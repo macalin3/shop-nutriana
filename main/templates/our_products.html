@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View All Nutriana Products</title>
+    <link href='https://fonts.googleapis.com/css?family=Rubik' rel='stylesheet'>
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static '../static/img/logo.png' %}">
+    <link href="{% static '../static/css/style.css' %}" rel="stylesheet">
+    <script src="{%static '../static/js/script.js'%}"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER: Nutriana logo, log in button -->
+        <header>
+            <a href="/"><img src="{% static '../static/img/logo.png' %}" class="logo"></a>
+            <nav class="navbar">
+                <a href="/">Home</a>
+                <a href="">About</a>
+                <a href="/our-products">Our Products</a>
+                <a href="">Contact</a>
+                {% if current_user %}
+                <a href="/sign-out">Sign Out</a>
+            </nav>
+            {% else %}
+            <button id="myBtn" class="first-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" class="bi bi-person-fill"
+                    viewBox="0 0 16 16" style="vertical-align: middle;">
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                </svg>
+                Log In</button>
+            {% endif %}
+        </header>
+        <div class="image-container">
+            <img src="{% static '../static/img/workout.jpg'%}" class="banner">
+        </div>
+        <p class="text-center xxs-margin-t" style="font-size: 12px;"><a href="/">Home</a> > <a href="/our-products">All
+                Products</a></p>
+        <!-- test -->
+        <div class="featured-products-row"  style="padding: 0 15%;">
+            <div class="featured-products text-center">
+                {% for product in all_products %}
+                <div class="product">
+                    <div class="product-img xxs-margin-b">
+                        <a href="/our-products/{{product.id}}"><img src="{{ product.image.url }}"></a>
+                    </div>
+                    <small><a href="/our-products/{{product.id}}">{{product.name}}</a></small><br>
+                    <small>${{ product.price|floatformat:2 }}</small>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

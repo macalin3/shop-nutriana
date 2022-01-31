@@ -10,4 +10,8 @@ urlpatterns = [
     path('process-signup', views.process_signup),
     path('our-products/<int:productID>', views.view_product),
     path('sign-out', views.sign_out),
+    path('our-products/<int:productID>/favorite', views.add_favorite),
+    path('our-products/<int:productID>/unfavorite', views.remove_favorite),
+    path('our-products/<int:productID>/add-to-cart', views.item_increment_cart),
+    path('our-products/<int:productID>/remove-from-cart', views.item_decrement_cart),
 ]
