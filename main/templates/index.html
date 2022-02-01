@@ -21,9 +21,10 @@
             <a href="/"><img src="{% static '../static/img/logo.png' %}" class="logo"></a>
             <nav class="navbar">
                 <a href="/">Home</a>
-                <a href="">About</a>
+                <a href="/about-nutriana">About</a>
                 <a href="/our-products">Our Products</a>
-                <a href="">Contact</a>
+                <a href="/contact-nutriana">Contact</a>
+                <a href="/cart">Cart</a>
                 {% if current_user %}
                 <a href="/sign-out">Sign Out</a>
             </nav>
@@ -39,7 +40,7 @@
         <!-- Image of family and Shop Now Button -->
         <div class="image-container">
             <img src="{% static '../static/img/family_home.png'%}" class="main-img">
-            <a href="" class="shop-now">Shop Now</a>
+            <a href="/our-products" class="shop-now">Shop Now</a>
         </div>
         <div class="featured-products-row">
             <h1 class="text-center">Featured Products</h1>

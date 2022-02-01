@@ -68,13 +68,13 @@
                     {% endif %}
                 </div>
                 <div class="product-options xxs-margin-t">
-                    <a href="/our-products/{{product.id}}/remove-from-cart" class="remove-from-cart no-underline">-</a>
-                    {% for product_item in current_order.orders.all %}
+                    <a href="/our-products/{{product.id}}/remove-from-order" class="remove-from-cart no-underline">-</a>
+                    {% for product_item in object.orders.all %}
                     <p class="product-qty">{{ product_item.quantity }}</p>
                     {% empty %}
                     <p class="product-qty">0</p>
                     {% endfor %}
-                    <a href="/our-products/{{product.id}}/add-to-cart" class="add-to-cart no-underline">+</a>
+                    <a href="/our-products/{{product.id}}/add-to-order" class="add-to-cart no-underline">+</a>
                 </div>
                 {% if messages %}
     <ul class="messages text-center mt-3" style="list-style-type: none;">

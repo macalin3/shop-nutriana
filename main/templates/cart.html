@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Nutriana</title>
+    <link href='https://fonts.googleapis.com/css?family=Rubik' rel='stylesheet'>
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static '../static/img/logo.png' %}">
+    <link href="{% static '../static/css/style.css' %}" rel="stylesheet">
+    <script src="{%static '../static/js/script.js'%}"></script>
+
+</head>
+
+<body>
+    <div class="container">
+        <!-- HEADER: Nutriana logo, log in button -->
+        <header>
+            <a href="/"><img src="{% static '../static/img/logo.png' %}" class="logo"></a>
+            <nav class="navbar">
+                <a href="/">Home</a>
+                <a href="/about-nutriana">About</a>
+                <a href="/our-products">Our Products</a>
+                <a href="/contact-nutriana">Contact</a>
+                {% if current_user %}
+                <a href="/sign-out">Sign Out</a>
+            </nav>
+            {% else %}
+            <button id="myBtn" class="first-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" class="bi bi-person-fill"
+                    viewBox="0 0 16 16" style="vertical-align: middle;">
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                </svg>
+                Log In</button>
+            {% endif %}
+        </header>
+
+        <h2>Your Cart Details</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>{% for product_item in object.orders.all %}
+                    <td><img src="{{ product_item.product.image.url }}" width="125px" height="125px"><br></td>
+                    <td>{{ product_item.product.name}}</td>
+                    <td>${{ product_item.product.price|floatformat:2}}</td>
+                    <td> <a href="cart/item_decrement/{{product_item.product.id}}/remove"
+                            class="btn btn-secondary shadow-sm p-2 mx-1">-</a> {{product_item.quantity}}<a
+                            href="cart/item_increment/{{product_item.product.id}}/add"
+                            class="btn btn-secondary shadow-sm p-2  mx-2">+</a>
+                    </td>
+                    <td>${{ product_item.total_price|floatformat:2}}</td>
+                    <td><a href="cart/item_decrement/{{product_item.product.id}}/trash" class="link-dark"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-trash" viewBox="0 0 16 16">
+                                <path
+                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                <path fill-rule="evenodd"
+                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                            </svg></a></td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="4"> <strong>Final Total:</strong></td>
+                    <td>
+                        <strong>${{ object.final_total|floatformat:2}}</strong>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+        <button type="button" class="btn btn-primary float-end" id="checkout-button">Proceed to Checkout</button>
+
+
+
+    </div>
+
+</body>
+
+</html>

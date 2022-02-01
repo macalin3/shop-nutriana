@@ -79,7 +79,7 @@ def view_product(request, productID):
         context = {
             "product": Product.objects.get(id=productID),
             "current_user": User.objects.get(id=request.session['user_id']),
-            "current_order": order,
+            "object": order,
         }
         return render(request, "view_product.html", context)
     
@@ -87,7 +87,6 @@ def view_product(request, productID):
         context = {
             "product": Product.objects.get(id=productID),
             "current_user": User.objects.get(id=request.session['user_id']),
-        
         }
 
         return render(request, 'view_product.html', context)
@@ -140,6 +139,29 @@ def item_increment(request, productID):
         messages.info(request, "Successfully added to your cart!")
         return redirect(f'/our-products/{productID}')
 
+def item_decrement(request, productID):
+    item = Product.objects.get(id=productID)
+    current_user = User.objects.get(id=request.session['user_id'])
+    inquiry = Cart.objects.filter(user=current_user,ordered=False)
+    if inquiry.exists():
+        order = inquiry[0]
+        if order.orders.filter(product_id=productID).exists():
+            order_item = Order.objects.filter(
+                product=item,
+                user=current_user,
+                ordered=False
+            )[0]
+            order.orders.remove(order_item)
+            order_item.delete()
+            messages.info(request, "Successfully removed from your cart!")
+            return redirect(f'/our-products/{productID}')
+        else:
+            # messages.info(request, "This item was not in your cart.")
+            return redirect(f'/our-products/{productID}')
+    else:
+        # messages.info(request, "You do not have an active order.")
+        return redirect(f'/our-products/{productID}')
+
 def item_increment_cart(request, productID):
     item = get_object_or_404(Product, id=productID)
     current_user = User.objects.get(id=request.session['user_id'])
@@ -154,11 +176,11 @@ def item_increment_cart(request, productID):
         if order.orders.filter(product_id=productID).exists():
             order_item.quantity += 1
             order_item.save()
-            return redirect(f'/our-products/{productID}')
+            return redirect('/cart')
 
         else:
             order.orders.add(order_item)
-            return redirect(f'/our-products/{productID}')
+            return redirect('/cart')
     else:
         ordered_date = timezone.now()
         order = Cart.objects.create(
@@ -166,7 +188,7 @@ def item_increment_cart(request, productID):
             ordered_date=ordered_date
         )
         order.orders.add(order_item)
-        return redirect(f'/our-products/{productID}')
+        return redirect('/cart')
 
 def item_decrement_cart(request, productID):
     item = Product.objects.get(id=productID)
@@ -186,14 +208,14 @@ def item_decrement_cart(request, productID):
                 
             else:
                 order.orders.remove(order_item)
-            return redirect(f'/our-products/{productID}')
+            return redirect('/cart')
         else:
             order.orders.remove(order_item)
             messages.info(request, "This item was not in your cart")
-            return redirect(f'/our-products/{productID}')
+            return redirect('/cart')
     else:
         messages.info(request, "You do not have an active order")
-        return redirect(f'/our-products/{productID}')
+        return redirect('/cart')
 
 def show_products(request):
     
@@ -213,4 +235,48 @@ def show_products(request):
         }
 
         return render(request, "our_products.html", context)
-    
+
+def show_about(request):
+    pass
+
+def show_contact(request):
+    pass
+
+def show_cart(request):
+
+    try:
+            
+        order = Cart.objects.get(user=User.objects.get(id=request.session['user_id']))
+        context = {
+            "current_user": User.objects.get(id=request.session['user_id']),
+            "object": order,
+                
+        }
+        return render(request, 'cart.html', context)
+        
+    except ObjectDoesNotExist:
+        context = {
+            "current_user": User.objects.get(id=request.session['user_id']),
+        
+        }
+        return render(request, 'cart.html', context)
+
+def item_trash(request, productID):
+    item = Product.objects.get(id=productID)
+    current_user = User.objects.get(id=request.session['user_id'])
+    inquiry = Cart.objects.filter(user=current_user,ordered=False)
+    if inquiry.exists():
+        order = inquiry[0]
+        if order.orders.filter(product_id=productID).exists():
+            order_item = Order.objects.filter(
+                product=item,
+                user=current_user,
+                ordered=False
+            )[0]
+            order.orders.remove(order_item)
+            order_item.delete()
+            return redirect("/cart")
+        else:
+            return redirect("/cart")
+    else:
+        return redirect("/cart")
